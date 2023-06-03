@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_social_media_app/components/drawer.dart';
 import 'package:flutter_social_media_app/components/text_field.dart';
 import 'package:flutter_social_media_app/components/wall_post.dart';
+import 'package:flutter_social_media_app/helper/helper_methods.dart';
 import 'package:flutter_social_media_app/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.pop(context);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ProfilePage()),
+      MaterialPageRoute(builder: (context) => const ProfilePage()),
     );
   }
 
@@ -78,6 +79,7 @@ class _HomePageState extends State<HomePage> {
                           user: post['UserEmail'],
                           postId: post.id,
                           likes: List<String>.from(post['Likes'] ?? []),
+                          time: formatDate(post['Timestamp']),
                         );
                       },
                     );
