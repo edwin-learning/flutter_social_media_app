@@ -35,9 +35,9 @@ class _WallPostState extends State<WallPost> {
   final _commentTextController = TextEditingController();
 
   @override
-  void setState(VoidCallback fn) {
+  void initState() {
+    super.initState();
     isLiked = widget.likes.contains(currentUser.email);
-    super.setState(fn);
   }
 
   void toggleLike() {
