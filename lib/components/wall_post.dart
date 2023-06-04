@@ -73,7 +73,7 @@ class _WallPostState extends State<WallPost> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Add Comment"),
+        title: const Text("Add Comment"),
         content: MyTextField(
           controller: _commentTextController,
           hintText: "Write a comment..",
@@ -81,14 +81,16 @@ class _WallPostState extends State<WallPost> {
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(context), child: Text("Cancel")),
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
           TextButton(
               onPressed: () {
                 addComment(_commentTextController.text);
                 Navigator.pop(context);
                 _commentTextController.clear();
               },
-              child: Text("Post")),
+              child: const Text("Post")),
         ],
       ),
     );
@@ -103,7 +105,7 @@ class _WallPostState extends State<WallPost> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("Cancel"),
+            child: const Text("Cancel"),
           ),
           TextButton(
             onPressed: () async {
@@ -129,7 +131,7 @@ class _WallPostState extends State<WallPost> {
 
               Navigator.pop(context);
             },
-            child: Text("Delete"),
+            child: const Text("Delete"),
           ),
         ],
       ),
@@ -152,31 +154,32 @@ class _WallPostState extends State<WallPost> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.message,
-                    overflow: TextOverflow.clip,
-                  ),
-                  const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Text(
-                        widget.user,
-                        style: TextStyle(color: Colors.grey[400]),
-                      ),
-                      Text(
-                        " • ",
-                        style: TextStyle(color: Colors.grey[400]),
-                      ),
-                      Text(
-                        widget.time,
-                        style: TextStyle(color: Colors.grey[400]),
-                      ),
-                    ],
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.message,
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text(
+                          widget.user,
+                          style: TextStyle(color: Colors.grey[400]),
+                        ),
+                        Text(
+                          " • ",
+                          style: TextStyle(color: Colors.grey[400]),
+                        ),
+                        Text(
+                          widget.time,
+                          style: TextStyle(color: Colors.grey[400]),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 5),
               if (widget.user == currentUser.email)
