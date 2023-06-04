@@ -1,16 +1,19 @@
 # flutter_social_media_app
 
-* https://www.youtube.com/watch?v=prp8-j3W_V0
+* <https://www.youtube.com/watch?v=prp8-j3W_V0>
 
-## Getting Started
+## 效果图
 
-This project is a starting point for a Flutter application.
+<div style="float:right">
+  <img src="./assets/login_page_light.png" width="30%" /> &nbsp;&nbsp;&nbsp;
+  <img src="./assets/profile_page_light.png" width="30%" /> &nbsp;&nbsp;&nbsp;
+  <img src="./assets/drawer_light.png" width="30%" />
+</div>
 
-A few resources to get you started if this is your first Flutter project:
+<br/>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+<div style="float:right">
+  <img src="./assets/home_page_light.png" width="30%" /> &nbsp;&nbsp;&nbsp;
+  <img src="./assets/home_page_dark.png" width="30%" />
+</div>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
