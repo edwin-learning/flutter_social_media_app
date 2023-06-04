@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_social_media_app/components/my_text_button.dart';
 import 'package:flutter_social_media_app/components/text_box.dart';
+import 'package:flutter_social_media_app/components/text_field.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,36 +21,28 @@ class _ProfilePageState extends State<ProfilePage> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(
           "Edit $field",
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
         ),
-        content: TextField(
+        content: MyTextField(
+          controller: TextEditingController(),
           autofocus: true,
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            hintText: "Enter new $field",
-            hintStyle: const TextStyle(color: Colors.grey),
-          ),
+          hintText: "Enter new $field",
           onChanged: (value) {
             newValue = value;
           },
         ),
         actions: [
-          TextButton(
+          MyTextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              "Cancel",
-              style: TextStyle(color: Colors.white),
-            ),
+            text: "Cancel"
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(newValue),
-            child: const Text(
-              "Save",
-              style: TextStyle(color: Colors.white),
-            ),
+
+          MyTextButton(
+              onPressed: () => Navigator.of(context).pop(newValue),
+              text: "Save"
           ),
         ],
       ),
@@ -62,9 +56,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Colors.grey[900],
         title: const Text("Profile Page"),
         centerTitle: true,
       ),
@@ -79,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
             return ListView(
               children: [
                 const SizedBox(height: 50),
-                Icon(
+                const Icon(
                   Icons.person,
                   size: 72,
                 ),

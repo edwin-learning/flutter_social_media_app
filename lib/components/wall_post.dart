@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_social_media_app/components/comment.dart';
 import 'package:flutter_social_media_app/components/comment_button.dart';
 import 'package:flutter_social_media_app/components/like_button.dart';
+import 'package:flutter_social_media_app/components/my_text_button.dart';
+import 'package:flutter_social_media_app/components/text_field.dart';
 import 'package:flutter_social_media_app/helper/helper_methods.dart';
 
 class WallPost extends StatefulWidget {
@@ -30,9 +32,6 @@ class _WallPostState extends State<WallPost> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   bool isLiked = false;
 
-  final userPostsCollection =
-      FirebaseFirestore.instance.collection("User Posts");
-
   final _commentTextController = TextEditingController();
 
   @override
@@ -46,7 +45,8 @@ class _WallPostState extends State<WallPost> {
       isLiked = !isLiked;
     });
 
-    DocumentReference postRef = userPostsCollection.doc(widget.postId);
+    DocumentReference postRef =
+        FirebaseFirestore.instance.collection("User Posts").doc(widget.postId);
 
     isLiked
         ? postRef.update({
@@ -58,7 +58,11 @@ class _WallPostState extends State<WallPost> {
   }
 
   void addComment(String commentText) {
-    userPostsCollection.doc(widget.postId).collection("Comments").add({
+    FirebaseFirestore.instance
+        .collection("User Posts")
+        .doc(widget.postId)
+        .collection("Comments")
+        .add({
       "CommentText": commentText,
       "CommentedBy": currentUser.email,
       "CommentTime": Timestamp.now(),
@@ -70,25 +74,29 @@ class _WallPostState extends State<WallPost> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text("Add Comment"),
-        content: TextField(
+        content: MyTextField(
           controller: _commentTextController,
-          decoration: InputDecoration(hintText: "Write a comment.."),
+          hintText: "Write a comment..",
+          obscureText: false,
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
-          ),
-          TextButton(
-            onPressed: () {
-              addComment(_commentTextController.text);
 
-              Navigator.pop(context);
-
-              _commentTextController.clear();
-            },
-            child: const Text("Post"),
+          MyTextButton(
+              onPressed: () => Navigator.pop(context),
+              text: "Cancel"
           ),
+
+          MyTextButton(
+              onPressed: () {
+                addComment(_commentTextController.text);
+
+                Navigator.pop(context);
+
+                _commentTextController.clear();
+              },
+              text: "Post"
+          ),
+
         ],
       ),
     );
@@ -98,7 +106,7 @@ class _WallPostState extends State<WallPost> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(8),
       ),
       margin: const EdgeInsets.only(top: 23, left: 25, right: 25),
@@ -117,10 +125,12 @@ class _WallPostState extends State<WallPost> {
                     widget.user,
                     style: TextStyle(color: Colors.grey[400]),
                   ),
-                  Text(" • ",
+                  Text(
+                    " • ",
                     style: TextStyle(color: Colors.grey[400]),
                   ),
-                  Text(widget.time,
+                  Text(
+                    widget.time,
                     style: TextStyle(color: Colors.grey[400]),
                   ),
                 ],
@@ -158,11 +168,10 @@ class _WallPostState extends State<WallPost> {
               ),
             ],
           ),
-
           const SizedBox(height: 20),
-
           StreamBuilder<QuerySnapshot>(
-            stream: userPostsCollection
+            stream: FirebaseFirestore.instance
+                .collection("User Posts")
                 .doc(widget.postId)
                 .collection("Comments")
                 .orderBy("CommentTime", descending: true)

@@ -4,7 +4,7 @@ class LikeButton extends StatelessWidget {
   final bool isLike;
   final void Function()? onTap;
 
-  LikeButton({
+  const LikeButton({
     super.key,
     required this.isLike,
     required this.onTap,
@@ -16,7 +16,7 @@ class LikeButton extends StatelessWidget {
       onTap: onTap,
       child: Icon(
         isLike ? Icons.favorite : Icons.favorite_border,
-        color: isLike ? Colors.red : Colors.grey,
+        color: isLike ? Colors.red : Theme.of(context).colorScheme.onSecondary,
       ),
     );
   }

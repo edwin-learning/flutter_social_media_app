@@ -41,19 +41,19 @@ class _HomePageState extends State<HomePage> {
     Navigator.pop(context);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ProfilePage()),
+      MaterialPageRoute(
+        builder: (context) => const ProfilePage(),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         centerTitle: true,
         title: const Text("The Wall"),
-        backgroundColor: Colors.grey[900],
-
       ),
       drawer: MyDrawer(
         onProfilePage: getProfilePage,
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("User Posts")
-                    .orderBy("Timestamp", descending: false)
+                    .orderBy("Timestamp", descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {

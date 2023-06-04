@@ -4,12 +4,16 @@ class MyTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
+  final bool autofocus;
+  final ValueChanged<String>? onChanged;
 
   const MyTextField({
     super.key,
     required this.controller,
     required this.hintText,
-    required this.obscureText,
+    this.obscureText = false,
+    this.onChanged,
+    this.autofocus = false,
   });
 
   @override
@@ -18,17 +22,22 @@ class MyTextField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
+        enabledBorder: OutlineInputBorder(
+          borderSide:
+              BorderSide(color: Theme.of(context).colorScheme.secondary),
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
-        fillColor: Colors.grey.shade200,
+        fillColor: Theme.of(context).colorScheme.primary,
         filled: true,
         hintText: hintText,
         hintStyle: TextStyle(color: Colors.grey[500]),
       ),
+      cursorColor: Theme.of(context).colorScheme.onPrimary,
+
+      onChanged: onChanged,
+      autofocus: autofocus,
     );
   }
 }
