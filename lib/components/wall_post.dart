@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_media_app/components/comment.dart';
 import 'package:flutter_social_media_app/components/comment_button.dart';
+import 'package:flutter_social_media_app/components/delete_button.dart';
 import 'package:flutter_social_media_app/components/like_button.dart';
-import 'package:flutter_social_media_app/components/my_text_button.dart';
 import 'package:flutter_social_media_app/components/text_field.dart';
 import 'package:flutter_social_media_app/helper/helper_methods.dart';
 
@@ -80,23 +80,57 @@ class _WallPostState extends State<WallPost> {
           obscureText: false,
         ),
         actions: [
-
-          MyTextButton(
-              onPressed: () => Navigator.pop(context),
-              text: "Cancel"
-          ),
-
-          MyTextButton(
+          TextButton(
+              onPressed: () => Navigator.pop(context), child: Text("Cancel")),
+          TextButton(
               onPressed: () {
                 addComment(_commentTextController.text);
-
                 Navigator.pop(context);
-
                 _commentTextController.clear();
               },
-              text: "Post"
-          ),
+              child: Text("Post")),
+        ],
+      ),
+    );
+  }
 
+  void deletePost() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Delete Post"),
+        content: const Text("Are you sure you want to delete this post?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () async {
+              FirebaseFirestore.instance
+                  .collection("User Posts")
+                  .doc(widget.postId)
+                  .collection("Comments")
+                  .get()
+                  .then((value) => value.docs.map((e) => FirebaseFirestore
+                      .instance
+                      .collection("User Posts")
+                      .doc(widget.postId)
+                      .collection("Comments")
+                      .doc(e.id)
+                      .delete()));
+
+              FirebaseFirestore.instance
+                  .collection("User Posts")
+                  .doc(widget.postId)
+                  .delete()
+                  .then((value) => print("Post Deleted"))
+                  .catchError((error) => print("Failed Delete : $error"));
+
+              Navigator.pop(context);
+            },
+            child: Text("Delete"),
+          ),
         ],
       ),
     );
@@ -114,27 +148,39 @@ class _WallPostState extends State<WallPost> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.message),
-              const SizedBox(height: 5),
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.user,
-                    style: TextStyle(color: Colors.grey[400]),
+                    widget.message,
+                    overflow: TextOverflow.clip,
                   ),
-                  Text(
-                    " • ",
-                    style: TextStyle(color: Colors.grey[400]),
-                  ),
-                  Text(
-                    widget.time,
-                    style: TextStyle(color: Colors.grey[400]),
+                  const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Text(
+                        widget.user,
+                        style: TextStyle(color: Colors.grey[400]),
+                      ),
+                      Text(
+                        " • ",
+                        style: TextStyle(color: Colors.grey[400]),
+                      ),
+                      Text(
+                        widget.time,
+                        style: TextStyle(color: Colors.grey[400]),
+                      ),
+                    ],
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
+              if (widget.user == currentUser.email)
+                DeleteButton(onTap: deletePost)
             ],
           ),
           const SizedBox(height: 20),

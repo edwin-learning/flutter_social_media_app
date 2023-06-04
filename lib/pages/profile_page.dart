@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_social_media_app/components/my_text_button.dart';
 import 'package:flutter_social_media_app/components/text_box.dart';
 import 'package:flutter_social_media_app/components/text_field.dart';
 
@@ -35,14 +34,13 @@ class _ProfilePageState extends State<ProfilePage> {
           },
         ),
         actions: [
-          MyTextButton(
+          TextButton(
             onPressed: () => Navigator.pop(context),
-            text: "Cancel"
+            child: const Text("Cancel"),
           ),
-
-          MyTextButton(
-              onPressed: () => Navigator.of(context).pop(newValue),
-              text: "Save"
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(newValue),
+            child: const Text("Save"),
           ),
         ],
       ),
